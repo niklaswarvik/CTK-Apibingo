@@ -86,6 +86,13 @@ def get_closest_store(loc, stores_and_rt):
 def get_store_name(store_key, stores):
     return stores[store_key]["name"]
 
+def get_best_match(article_dict, key):
+    best_keys = []
+    for k in article_dict.keys():
+        m_r = fuzz.ratio(k,key)
+        if m_r > 70:
+            best_keys += [k]
+    return best_keys
 
 def main():
     
