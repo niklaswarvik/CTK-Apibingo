@@ -3,6 +3,8 @@ import location
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
 import xml.etree.ElementTree as ET
+from threading import Thread
+import time
 
 maxDistance = 10000000
 
@@ -19,7 +21,7 @@ def get_stores(tree):
         storeinfo = store.getchildren()
         name = findattrib(storeinfo, "Namn")
         
-        if name != isinstance(name, str):
+        if False == isinstance(name, str):
             name = findattrib(storeinfo, "Address1")
 
         store_num = findattrib(storeinfo, "Nr")
@@ -102,8 +104,10 @@ def get_best_match(article_dict, key):
     return best_keys
 
 def main():
-    
-    printSplash()
+
+    thread = Thread(target = printSplash, args = ())
+    thread.start()
+
 
     #stock = requests.get("http://www.systembolaget.se/api/assortment/stock/xml").text
     #products = requests.get("http://www.systembolaget.se/api/assortment/products/xml").text
@@ -119,6 +123,7 @@ def main():
 
     coordinates = (0, 0)
     article_searched = ""
+    thread.join()
 
     while not_exit:
         print("commands is:\n 1 - enter address \n 2 - Enter beverage \n 3 - start search \n 0 - quit")
@@ -176,7 +181,6 @@ def main():
                 if distance == maxDistance:
                     print("\tNo store found")
                 else:
-                    print(key)
                     print("\t\tClosest store is: {}".format(get_store_name(key, stores)))
                     print("\t\t{} metres away".format(int(distance)))
 
@@ -228,4 +232,6 @@ def printSplash():
     print("              `:oyyyyyyyyyyyyyyyyysssssssssosooooooooooooooooooooooooooooooo++oo+++++++++++++o+++++++oooo+ooooooooooossss+:-`               ")
 
 
+    #time.sleep(2)
+    #print("\n\n\n\n\n\nStuff is loading for ya, please wait typ")
 main()
