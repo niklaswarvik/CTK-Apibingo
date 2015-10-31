@@ -2,7 +2,7 @@ import location
 
 def main():
     
-    #Load data from API 
+    #Load data from API
     print("commands is:\n 1 - enter address \n 2 - Enter beverage \n 3 - start search \n 0 - quit")
     
     notExit = True
@@ -31,13 +31,15 @@ def main():
             
         elif cmd =="2":
             beverage = input("enter the exact name of the beverage: ")
+            #Todo find stores
         elif cmd =="3":
             if coordinates[0] == 0 and coordinates[1] == 0:
                 print("you have not entered an address")
             elif beverage =="":
                 print("you have not entered a beverage")
             else:
-
+                print("todo")
+                #Find da stuff
         else:
             print("not a command")
 
