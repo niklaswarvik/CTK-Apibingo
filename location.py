@@ -14,8 +14,7 @@ def distanceRound(loc1, loc2):
     lat1 = loc1[0]
     lat2 = loc2[0]
 
-    a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2)
+    a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2)
 
     c = 2 * Math.atan2(Math.sqrt(a), math.sqrt(1-a))
 
