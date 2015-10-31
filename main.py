@@ -18,8 +18,10 @@ def get_stores(tree):
     for store in root.getchildren(): #getchildren():
         storeinfo = store.getchildren()
         name = findattrib(storeinfo, "Namn")
-        if name == "":
+        
+        if name != isinstance(name, str):
             name = findattrib(storeinfo, "Address1")
+
         store_num = findattrib(storeinfo, "Nr")
         rt90x = findattrib(storeinfo, "RT90x")
         rt90y = findattrib(storeinfo, "RT90y")
@@ -98,6 +100,8 @@ def get_best_match(article_dict, key):
 
 def main():
     
+    printSplash()
+
     #stock = requests.get("http://www.systembolaget.se/api/assortment/stock/xml").text
     #products = requests.get("http://www.systembolaget.se/api/assortment/products/xml").text
     #stores = requests.get("http://www.systembolaget.se/api/assortment/products/xml").text
@@ -129,14 +133,14 @@ def main():
             else:
                 addressResults = location.getAddressLocation(inp)
                 selectedAddress = 0
-                print("multiple addresses")
                 if len(addressResults) > 1:
+                    print("multiple addresses")
                     for i in range(0, len(addressResults)):
                         print("{} - {}".format(i+1, addressResults[i][0]))
                     selectedAddress = int(input("Select address: ")) - 1
                 print(addressResults[selectedAddress][0])
                 coordinates = (addressResults[selectedAddress][1]["lat"], addressResults[selectedAddress][1]["lng"])
-                #print(coordinates)
+                print(coordinates)
             
         elif cmd =="2":
             while True:
@@ -160,17 +164,63 @@ def main():
         elif cmd =="3":
             if coordinates[0] == 0 and coordinates[1] == 0:
                 print("\tyou have not entered an address")
-            elif article_searched =="":
+            elif article_searched == "":
                 print("\tyou have not entered an article")
             else:
                 (distance, key) = get_closest_store(coordinates, stores_and_rt)
                 if distance == maxDistance:
                     print("\tNo store found")
                 else:
-                    print("\t\tClosest store is: " + get_store_name(key, stores))
+                    print(key)
+                    print("\t\tClosest store is: {}".format(get_store_name(key, stores)))
                     print("\t\t{} metres away".format(int(distance)))
 
         else:
             print("not a command")
+
+
+
+def printSplash():
+    print("                `.----//////////++o+ooo+o+oosssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssyso+++++++++++++/:.                ")
+    print("              .-/yyyyyyyyyyyyyyyyyyyyyyysssssssssssssssssssssssssssssssssssoosssssoosssssssoossooooooooooooooooooooooooooooo-`              ")
+    print("            ``/syyysssssoooooo++++++//////////:::::::::::::::-----------------------:::::::::::::::::::::::::://////////ooooo/-`            ")
+    print("           ./oyyys+-------:::--------------------------------------------::::::::::::::::--------------------------------/ooooo:.           ")
+    print("         `-+yyyyo:-::+oooooossssssssyyyyyyyyyyhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhyyyyyyyyyyo---:+oooo/:`         ")
+    print("       `.+yyyyo::::+hdddddhhhhhhhhhhhyyyyyyyyyssssssssssssoooooooooooooooooooooooooooooooooossssssssssssssyyyyyyyyyyhddh+---:+oooo/.`       ")
+    print("      :/yyyys/:::/yddh+//::::::::::::::::::::::::-:-----------------------------------------------------------------:ohddy/---:+oooo+:`     ")
+    print("    ./shhhy+:::/shdho::::::::::::::::::::::::::::::::-----------------------------------------------------------------:sddds:---/ooooo/`    ")
+    print("  `-ohhhho:-::ohdds/::::::::::::::::::::::::::::::::::-::---------------------------------::::::::::::::::::-::---------/yddho:---/oooo+/.  ")
+    print("`:/yhhhs:--:+hddy+::::::::::::::::::::::::::::::::::::::--------------------------------:---:::::::::::--::---------------+yddh+--.-+ooos+-.")
+    print(":ydhhy/---/yhhh+:::::::::::::::::::::::::::::::::::::::-----------------------------------:-:::::-:::::-::------------------+hddy/-..:ooosso")
+    print("hddho---:shhho:::::::::::::::::::::::::::::::::::::::-------------------------------------:-::-:::::::::::-------------------:ohdhs:...+ssss")
+    print("hddh:--/hhhs/:::::::::::::::::::::::::::::::::://///::::/++++/:/:-:+++++++++++/-/+++++++++//:-://////::---:::::::--------------:yhhy-../ssss")
+    print("hhhh:--/hhy::::::::::::::::oysooossho-+shddds/:ohdyo::sho////oyh/-ohs+/hdh+/+hy:/+yddy++++yd/-:osdhdds:--:shdddys:--------------ohhy-../ssss")
+    print("hhhy:--/hhy:::::::::::::::sds::::::so::::shdy/:sh/:--+dds++///:o:-/+---ydh/--/+:--+dds::os:o/---:dosdd+--oh+hdh:----------------odhy-../ssss")
+    print("hhhy:--/hhy:::::::::::::::ohdhhhhhyo/:--:-/ydhho:----:oyhhhhddhs:------hdh/-------+ddhsydy:-----:do:ydh:/h+:hdh:----------------ohhy-..+ssss")
+    print("hhhy:--+hhy:::::::::::::::///++++oydy::::::/ddy::-:::/s:-::::/hdo-----:hdh/-------+dds::+o/s/--::do-/hdyhs::hdh:----------------ohhy.../ssss")
+    print("hhhy:--+hhy:::::::::::::::yh+::::/sdo:::::+sddho+::::+dyo+//+shs:---:osdddyo/--:+ohddyoooshd+:/osdy+:oddy:/+hddo/:--------------odhy...+ssss")
+    print("hhhy:--+hhy:::::::::::::::oo+ssssso/:::::/+++++++:::::/::/+++/:-----:///////:--::///////////:::///++::/+::+++++++:--------------odhy...+ssss")
+    print("hhhy:--+hhy:::::::::::::::::::::::::::::::::::::::::::::::::::--------------::::::::::::::::::::::::::::::::::::----------------sdhy...+ssss")
+    print("hhhy:--+hhy::::::::::::::::::::::::::::::::::::::::::::::::::::::-:-:--:::::::::::::::::::::::::::::::::::::::::::--------------shhy...+ssss")
+    print("hhhy:--+hhy::::::::::::::::::::::::::://++++/:::::+++++++:::::::::::/++/:::::::::/oosoo+/+/::/+++++++++//::://////::::::--------sdhy...+ssso")
+    print("hhhy:--+hhy::::::::/yyhhhsssyhho:::/ohhso++shhs/:/osddds+::::::::::/hydd+::::::shds+/:/+ydo::/+sddho++oydo:/dhsoyddyoshh:-------sdhy...+ssss")
+    print("hhhy:--+hhy::::::::::+ddy/::/hdh/:/hdd+:::::/hdd+::/hdh:::::::::::/hs:sdh/::::ydd+:::::::o/::::/ddh::+y/o+:/s/::sddo::/y:-------sdhs...+ssss")
+    print("hhhy:--+hdy::::::::::/ddhssyhdy+::+ddh:::::::sdds::/hdh::::::::::/hy:::ydh/::/ddh/:::/ssssss+::/dddyydh/::::::::sddo::::::------sdhs...+ssso")
+    print("hhhy:--ohdy:::::::::/+ddh////sdds:/ddh/:::::/hdd+::/hdh::::+y:::/hhssssshdh/::sdds::::/+ddy/:::/ddh/:+s/so::::::sddo:::::::-----sdds...+ssso")
+    print("hhhy:--ohhy:::::::://oddh//++yddo::+ydhs+++shdy+:/sydddsssydh:+shdy+:::oyddhs+:+yhhsoosyhds::/sydddsooshdo::::+ohddy+/:::::-----ydds...+ssss")
+    print("hhhy:-:ohdy::::::::+sssssssooo+/:::::/+oooo+/::::://////////:::/:::::::::::::::::://++/:::::::///////++++/::::+++oooo+:::::-----ydds...+ooso")
+    print("hhhs:::ohhy/:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::----/hdds...+osss")
+    print("hhhy:-:/hhdho:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::---:sdddy/...+ssss")
+    print("hhhhs/:::ohddh+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-:sdddy+-..:ossso:")
+    print(":shhhhs/:::shddy+:::::::::::::::::::::::::::::::::::::::::::::::::::---:::::::::::::::::::::::::::::::::::::::::::::::::::shddh+---:ossss/.`")
+    print("`./shyyys/::/sdddy/::::::::::::::::::::::::::::::::::::::::::---------------:--:::::::::::::::::::::::::::::::::::::::::ohddh+---:ossss/.`  ")
+    print("   .:syyyyo/::/yddds/:::::::::::::::::::::::::::::::::::-------------------------:::::::::::::::::::::::::::::::::::::ohddho:--:+ssss+-`    ")
+    print("    `:/oyyyyo:::/yddho/::::::::::////////////++++++++++++++++++++++++++++oooooooooooooo++++++++++++++++++//////////:ohddho:--:+ssso/:-      ")
+    print("       .:syyyy+:::+yddhhhhhhhdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddho:--:+ssso+.`        ")
+    print("         -/yyyyy+:::+ssssooooooooo++++++++++//////////////////:::::::::::::::::::::::////////////////////+++++++++++o+:--:+osso+-.          ")
+    print("          ..oyyyyy+::--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::----------:+ssss+-`            ")
+    print("            .:+yyyyyyyyyyyyyyyyyyyyyyysssssssssoooooooooooooooooooooooooooooooooooooooo++++o+oooooooooooooooooooooooooossss+-`              ")
+    print("              `:oyyyyyyyyyyyyyyyyysssssssssosooooooooooooooooooooooooooooooo++oo+++++++++++++o+++++++oooo+ooooooooooossss+:-`               ")
+
 
 main()
