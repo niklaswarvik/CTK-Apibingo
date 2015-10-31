@@ -9,14 +9,14 @@ def distanceStraight(loc1, loc2):
 def distanceRound(loc1, loc2):
 
     R = 6371000;
-    dLat = math.toRadians(loc2[0]-loc1[0])
-    dLon = math.toRadians(loc2[1]-loc1[1])
-    lat1 = loc1[0]
-    lat2 = loc2[0]
+    dLat = math.radians(loc2[0]-loc1[0])
+    dLon = math.radians(loc2[1]-loc1[1])
+    lat1 = math.radians(loc1[0])
+    lat2 = math.radians(loc2[0])
 
-    a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2)
+    a = math.sin(dLat/2) * math.sin(dLat/2) + math.sin(dLon/2) * math.sin(dLon/2) * math.cos(lat1) * math.cos(lat2)
 
-    c = 2 * Math.atan2(Math.sqrt(a), math.sqrt(1-a))
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
 
     d = R * c
 
@@ -51,3 +51,4 @@ def getAddressLocation(address):
     	result.append((data["results"][0]["formatted_address"], data["results"][0]["geometry"]["location"]))
     return result
 
+distanceRound((10,20), (5,7))

@@ -58,14 +58,25 @@ def get_stores_and_rt(stores, stores_with_article):
     for store in stores_with_article:
         try:
             store_dict = stores[store]
-            print(store_dict)
-            store_and_rt[store] = [store_dict["RT90x"], store_dict["RT90y"]]
+            #print(store_dict)
+            store_and_rt[store] = [float(store_dict["RT90x"]), float(store_dict["RT90y"])]
         except:
             continue
     return store_and_rt
 
+def get_closest_store(loc, stores_and_rt):
+    distance = 10000000000
+    store_key = 0
+
+    for store in stores_and_rt:
+        store_location = (stores_and_rt[store][0], stores_and_rt[store][1])
+        d = location.distanceRound(loc, store_location)
+
+        if(d < distance):
+            distance = d
+            store_key = store
     
-    
+    return (distance, store_key)
 
 
 def main():
@@ -80,6 +91,7 @@ def main():
     article_searched = "Renat"
     stores_with_article = get_stores_with_article(store_articles, articles[article_searched])
     stores_and_rt = get_stores_and_rt(stores, stores_with_article)
+
     #Load data from API
     print("commands is:\n 1 - enter address \n 2 - Enter beverage \n 3 - start search \n 0 - quit")
     
@@ -87,7 +99,7 @@ def main():
 
 
     coordinates = (0, 0)
-    beverage = ""
+    article_searched = ""
 
     while notExit:
         cmd = input("enter cmd: ")
@@ -108,16 +120,19 @@ def main():
                 print(coordinates)
             
         elif cmd =="2":
-            beverage = input("enter the exact name of the beverage: ")
-            #Todo find stores
+            article_searched = input("enter the exact name of the beverage: ")
+            stores_with_article = get_stores_with_article(store_articles, articles[article_searched])
+            stores_and_rt = get_stores_and_rt(stores, stores_with_article)
+
         elif cmd =="3":
             if coordinates[0] == 0 and coordinates[1] == 0:
                 print("you have not entered an address")
-            elif beverage =="":
-                print("you have not entered a beverage")
+            elif article_searched =="":
+                print("you have not entered an article")
             else:
-                print("todo")
-                #Find da stuff
+                (distance, key) = get_closest_store(coordinates, stores_and_rt)
+                print(distance)
+                
         else:
             print("not a command")
 
