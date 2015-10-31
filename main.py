@@ -2,6 +2,7 @@ import requests
 import location
 import xml.etree.ElementTree as ET
 
+maxDistance = 10000000
 
 def findattrib(elements, tag):
     for element in elements:
@@ -65,11 +66,12 @@ def get_stores_and_rt(stores, stores_with_article):
     return store_and_rt
 
 def get_closest_store(loc, stores_and_rt):
-    distance = 10000000000
+    distance = maxDistance
     store_key = 0
 
     for store in stores_and_rt:
         store_location = (stores_and_rt[store][0], stores_and_rt[store][1])
+        store_location = location.rt90_to_wgs84(store_location)
         d = location.distanceRound(loc, store_location)
 
         if(d < distance):
@@ -77,6 +79,9 @@ def get_closest_store(loc, stores_and_rt):
             store_key = store
     
     return (distance, store_key)
+
+def get_store_name(store_key, stores):
+    return stores[store_key]["name"]
 
 
 def main():
@@ -131,8 +136,12 @@ def main():
                 print("you have not entered an article")
             else:
                 (distance, key) = get_closest_store(coordinates, stores_and_rt)
-                print(distance)
-                
+                if distance == maxDistance:
+                    print("No store found")
+                else:
+                    print(distance)
+                    print(get_store_name(key, stores))
+
         else:
             print("not a command")
 

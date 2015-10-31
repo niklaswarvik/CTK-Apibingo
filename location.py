@@ -34,10 +34,10 @@ def distanceRound(loc1, loc2):
     #var d = R * c;
 
 def rt90_to_wgs84(loc):
-    pc.rt90_to_wgs84(loc[0], loc[1])
+    return pc.rt90_to_wgs84(loc[0], loc[1])
 
 def wgs84_to_rt90(loc):
-    pc.wgs84_to_rt90(loc[0], loc[1])
+    return pc.wgs84_to_rt90(loc[0], loc[1])
 
 def getAddressLocation(address):
     url = 'http://maps.googleapis.com/maps/api/geocode/json'
@@ -47,7 +47,6 @@ def getAddressLocation(address):
     data = resp.json()
     result = [];
     for i in range(0,len(data["results"])):
-    	print(i)
     	result.append((data["results"][0]["formatted_address"], data["results"][0]["geometry"]["location"]))
     return result
 
