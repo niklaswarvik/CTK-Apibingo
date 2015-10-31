@@ -1,5 +1,7 @@
 import requests
 import location
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 import xml.etree.ElementTree as ET
 
 maxDistance = 10000000
@@ -137,7 +139,21 @@ def main():
                 #print(coordinates)
             
         elif cmd =="2":
-            article_searched = input("enter the exact name of the beverage: ")
+            while True:
+                article_searched = input("enter the name of the beverage: ")
+                matching_articles = get_best_match(articles, article_searched)
+                if (len(matching_articles) > 0):
+                    print("Which one did you mean?")
+                    i = 0
+                    for a in matching_articles:
+                        print("(" + str(i) + ") " + a)
+                        i += 1
+                    index = input("Enter index: ")
+                    index = int(index)# Catch not number exception
+                    article_searched = matching_articles[index]
+                    break
+                else:
+                    print("Not found")
             stores_with_article = get_stores_with_article(store_articles, articles[article_searched])
             stores_and_rt = get_stores_and_rt(stores, stores_with_article)
 
