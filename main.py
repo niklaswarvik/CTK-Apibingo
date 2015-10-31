@@ -93,24 +93,20 @@ def main():
     store_articles = get_store_articles(ET.parse("store_articles.xml"))
     articles = get_articles(ET.parse("articles.xml"))
 
-    article_searched = "Renat"
-    stores_with_article = get_stores_with_article(store_articles, articles[article_searched])
-    stores_and_rt = get_stores_and_rt(stores, stores_with_article)
-
     #Load data from API
-    print("commands is:\n 1 - enter address \n 2 - Enter beverage \n 3 - start search \n 0 - quit")
-    
-    notExit = True
+     
+    not_exit = True
 
 
     coordinates = (0, 0)
     article_searched = ""
 
-    while notExit:
+    while not_exit:
+        print("commands is:\n 1 - enter address \n 2 - Enter beverage \n 3 - start search \n 0 - quit")
         cmd = input("enter cmd: ")
 
         if cmd == "0":
-            notExit = False
+            not_exit = False
         elif cmd == "1":
             inp = input("enter address or coordinates (lat, lng): ");
             checkCoordinates = inp.split()

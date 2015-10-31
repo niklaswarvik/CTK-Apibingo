@@ -49,5 +49,3 @@ def getAddressLocation(address):
     for i in range(0,len(data["results"])):
     	result.append((data["results"][0]["formatted_address"], data["results"][0]["geometry"]["location"]))
     return result
-
-distanceRound((10,20), (5,7))
