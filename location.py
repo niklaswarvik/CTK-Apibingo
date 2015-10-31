@@ -47,5 +47,5 @@ def getAddressLocation(address):
     data = resp.json()
     result = [];
     for i in range(0,len(data["results"])):
-    	result.append((data["results"][0]["formatted_address"], data["results"][0]["geometry"]["location"]))
+    	result.append((data["results"][i]["formatted_address"], data["results"][i]["geometry"]["location"]))
     return result

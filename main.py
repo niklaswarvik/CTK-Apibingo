@@ -8,13 +8,16 @@ def findattrib(elements, tag):
     for element in elements:
         if (element.tag == tag):
             return element.text
+    return ""
 
 def get_stores(tree):
     root = tree.getroot()
     stores = {}
     for store in root.getchildren(): #getchildren():
         storeinfo = store.getchildren()
-        name = findattrib(storeinfo, "Address1")
+        name = findattrib(storeinfo, "Namn")
+        if name == "":
+            name = findattrib(storeinfo, "Address1")
         store_num = findattrib(storeinfo, "Nr")
         rt90x = findattrib(storeinfo, "RT90x")
         rt90y = findattrib(storeinfo, "RT90y")
@@ -110,15 +113,21 @@ def main():
         elif cmd == "1":
             inp = input("enter address or coordinates (lat, lng): ");
             checkCoordinates = inp.split()
-            if len(checkCoordinates) == 2 and checkCoordinates[0].isdigit and checkCoordinates[1].isdigit: 
+            if len(checkCoordinates) == 2 and checkCoordinates[0].isdigit() and checkCoordinates[1].isdigit(): 
                 coordinates = (float(checkCoordinates[0]), float(checkCoordinates[1]))
 
                 print(coordinates)
             else:
                 addressResults = location.getAddressLocation(inp)
-                print(addressResults[0][0])
-                coordinates = (addressResults[0][1]["lat"], addressResults[0][1]["lng"])
-                print(coordinates)
+                selectedAddress = 0
+                print("multiple addresses")
+                if len(addressResults) > 1:
+                    for i in range(0, len(addressResults)):
+                        print("{} - {}".format(i+1, addressResults[i][0]))
+                    selectedAddress = int(input("Select address: ")) - 1
+                print(addressResults[selectedAddress][0])
+                coordinates = (addressResults[selectedAddress][1]["lat"], addressResults[selectedAddress][1]["lng"])
+                #print(coordinates)
             
         elif cmd =="2":
             article_searched = input("enter the exact name of the beverage: ")
@@ -127,16 +136,16 @@ def main():
 
         elif cmd =="3":
             if coordinates[0] == 0 and coordinates[1] == 0:
-                print("you have not entered an address")
+                print("\tyou have not entered an address")
             elif article_searched =="":
-                print("you have not entered an article")
+                print("\tyou have not entered an article")
             else:
                 (distance, key) = get_closest_store(coordinates, stores_and_rt)
                 if distance == maxDistance:
-                    print("No store found")
+                    print("\tNo store found")
                 else:
-                    print(distance)
-                    print(get_store_name(key, stores))
+                    print("\t\tClosest store is: " + get_store_name(key, stores))
+                    print("\t\t{} metres away".format(int(distance)))
 
         else:
             print("not a command")
