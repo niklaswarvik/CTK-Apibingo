@@ -94,6 +94,9 @@ def get_best_match(article_dict, key):
     best_keys = []
     for k in article_dict.keys():
         m_r = fuzz.ratio(k,key)
+        if m_r == 100:
+            best_keys = [k]
+            break
         if m_r > 70:
             best_keys += [k]
     return best_keys
@@ -147,6 +150,8 @@ def main():
                 article_searched = input("enter the name of the beverage: ")
                 matching_articles = get_best_match(articles, article_searched)
                 if (len(matching_articles) > 0):
+                    if fuzz.ratio(matching_articles[0], article_searched) == 100:
+                        break
                     print("Which one did you mean?")
                     i = 0
                     for a in matching_articles:
